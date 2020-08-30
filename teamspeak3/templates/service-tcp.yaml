@@ -1,0 +1,32 @@
+{{- if and (.Values.service.tcp.enabled) (eq .Values.service.tcp.type "seperate")}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-tcp
+  labels:
+    app: teamspeak
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+{{- if .Values.service.annotations }}
+  annotations:
+{{ tpl (toYaml .Values.service.annotations) . | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  {{- if and (eq .Values.service.type "LoadBalancer") ( .Values.service.ip ) }}
+  loadBalancerIP: {{ .Values.service.ip }}
+  {{- end }}
+  ports:
+  - name: teamspeak-filetransfer
+    port: 30033
+    protocol: TCP
+    targetPort: 30033
+  - name: teamspeak-serverquery
+    port: 10011
+    protocol: TCP
+    targetPort: 10011
+  selector:
+    app: teamspeak
+    release: {{ .Release.Name }}
+{{- end }}

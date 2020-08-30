@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: haproxy-exporter
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: haproxy-exporter
+      chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+      release: {{ .Release.Name }}
+      heritage: {{ .Release.Service }}
+  template:
+    metadata:
+      labels:
+        app: haproxy-exporter
+        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+        release: {{ .Release.Name }}
+        heritage: {{ .Release.Service }}
+    {{- if .Values.pod.annotations }}
+      annotations:
+{{ toYaml .Values.pod.annotations | indent 8 }}
+    {{- end }}
+    spec:
+      containers:
+      - name: haproxy-exporter
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        args:
+      {{- range .Values.pod.args }}
+        - {{ . }}
+      {{- end }}
+        ports:
+        - containerPort: 9101
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9101
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9101
+      {{- if .Values.resources }}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
+      {{- end }}
+      imagePullSecrets:
+      - name: {{ .Values.image.pullSecret }}

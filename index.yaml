@@ -1,0 +1,21 @@
+apiVersion: v1
+entries:
+  teamspeak3:
+  - apiVersion: v1
+    appVersion: 3.12.1
+    created: "2020-08-30T14:19:18.2105064Z"
+    description: teamspeak
+    digest: a82b80179990ac604d938636f56ea3b82933ffb9bc9130873de1b83824248da2
+    home: https://github.com/ksandermann/teamspeak-helm-chart
+    keywords:
+    - teamspeak3
+    maintainers:
+    - email: kevin.sandermann@gmail.com
+      name: ksandermann
+    name: teamspeak3
+    sources:
+    - https://github.com/ksandermann/teamspeak-helm-chart
+    urls:
+    - https://github.com/ksandermann/helm-charts/teamspeak3/teamspeak3-0.2.1.tgz
+    version: 0.2.1
+generated: "2020-08-30T14:19:18.2036527Z"

@@ -1,0 +1,15 @@
+Deployed image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+
+{{- if eq .Values.service.type "NodePort"}}
+When running behind a Loadbalancer, the IP of you TS server is the IP of your Loadbalancer.
+When not running behind a Loadbalancer, you can use any of your Nodes' IPs as the IP of your server.
+{{- end }}
+
+{{- if eq .Values.service.type "LoadBalancer"}}
+In about a minute, when the Loadbalancer has been provisioned, you can get the IP of your server by running:
+kubectl get svc {{ .Release.Name }} --output jsonpath='{.status.loadBalancer.ingress[0].ip}' -n {{ .Release.Namespace }}
+{{- end }}
+
+You can get your privilege key by running:
+kubectl logs -l app=teamspeak -l heritage={{ .Release.Service }} -l release={{ .Release.Name }} -l chart={{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }} -n {{ .Release.Namespace }}
+{{ .Release.Namespace }}
