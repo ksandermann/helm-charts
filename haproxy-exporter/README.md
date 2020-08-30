@@ -6,7 +6,9 @@ Prometheus Exporter for HAProxy.
 ## TL;DR;
 
 ```bash
-helm install .
+helm repo add ksandermann http://charts.sandermann.cloud
+helm repo update
+helm install haproxy-exporter haproxy-exporter
 ```
 
 ## Introduction
@@ -35,7 +37,9 @@ listen stats # Define a listen section called "stats"
 To install the chart with the release name `my-release`:
 
 ```bash
-helm install . --name my-release
+helm repo add ksandermann http://charts.sandermann.cloud
+helm repo update
+helm install haproxy-exporter haproxy-exporter
 ```
 
 The command deploys HAProxy Exporter on the Kubernetes cluster in the
@@ -52,7 +56,7 @@ Recommended installation:
 kubectl config set-context $(kubectl config current-context) --namespace=default
 
 helm upgrade haproxy-exporter-proxy1 \
-    . \
+    haproxy-exporter \
     --install \
     --version 1.0.0 \
     --namespace default \
@@ -61,7 +65,7 @@ helm upgrade haproxy-exporter-proxy1 \
     --dry-run
 
 helm upgrade haproxy-exporter-proxy1 \
-    . \
+    haproxy-exporter \
     --install \
     --version 1.0.0 \
     --namespace default \
@@ -78,7 +82,7 @@ want to monitor.
 To uninstall/delete the `my-release` deployment:
 
 ```bash
-helm del --purge my-release
+helm del haproxy-exporter-proxy1
 ```
 
 The command removes all the Kubernetes components associated with the chart
@@ -102,4 +106,3 @@ values.
 | `service.annotations`                         | Specify annotations for the service        | `prometheus.io/path: "/metrics"` `prometheus.io/port: "9101"` `prometheus.io/scrape: "true"` |   
 | `resources`                                   | Kubernetes resources                       | `nil`                                                                                        |
 | `ingress`                                     | Kubernetes ingress configuration           | `nil`                                                                                        |
-                                                                      

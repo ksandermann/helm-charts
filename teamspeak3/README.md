@@ -5,11 +5,12 @@
 ## TL;DR;
 
 ```bash
+helm repo add ksandermann http://charts.sandermann.cloud
+helm repo update
 helm upgrade teamspeak \
-    ./chart \
+    teamspeak \
     --install \
-    --namespace default \
-    -f ./chart/values.yaml
+    --namespace default
 ```
 NB: Limited support for TCP ports. See [Known Limitations](#known-limitations)
 
@@ -26,15 +27,18 @@ Recommended installation:
 ```bash
 kubectl config set-context $(kubectl config current-context) --namespace=default
 
+helm repo add ksandermann http://charts.sandermann.cloud
+helm repo update
+
 helm upgrade ts3 \
-    ./chart \
+    teamspeak \
     --install \
     --namespace default \
     -f values.yaml \
     --dry-run
 
 helm upgrade ts3 \
-    ./chart \
+    teamspeak \
     --install \
     --namespace default \
     -f values.yaml
@@ -47,7 +51,7 @@ kubectl get pods
 To uninstall/delete the `my-release` deployment:
 
 ```bash
-helm del --purge my-release
+helm del ts3
 ```
 
 The command removes all the Kubernetes components associated with the chart
