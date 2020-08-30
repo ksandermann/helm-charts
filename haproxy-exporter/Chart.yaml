@@ -1,7 +1,7 @@
 apiVersion: v1
 description: haproxy-exporter
 engine: gotpl
-home: https://ksandermann.github.io/helm-charts/
+home: http://charts.sandermann.cloud/
 keywords:
 - haproxy
 - prometheus
