@@ -1,0 +1,15 @@
+apiVersion: v1
+description: checkmk helm chart
+engine: gotpl
+home: https://ksandermann.github.io/helm-charts/
+keywords:
+- checkmk
+- monitoring
+maintainers:
+- email: kevin.sandermann@gmail.com
+  name: ksandermann
+name: checkmk
+sources:
+  - https://github.com/ksandermann/helm-charts/blob/master/haproxy-exporter
+version: 0.1.1
+appVersion: 1.5.0p12

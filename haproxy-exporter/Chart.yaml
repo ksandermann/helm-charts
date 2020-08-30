@@ -1,0 +1,17 @@
+apiVersion: v1
+description: haproxy-exporter
+engine: gotpl
+home: https://ksandermann.github.io/helm-charts/
+keywords:
+- haproxy
+- prometheus
+- monitoring
+- exporter
+maintainers:
+- email: kevin.sandermann@gmail.com
+  name: ksandermann
+name: haproxy-exporter
+sources:
+  - https://github.com/ksandermann/helm-charts/blob/master/haproxy-exporter
+version: 1.0.0
+appVersion: v0.10.0

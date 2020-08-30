@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: checkmk
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: checkmk
+      chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+      release: {{ .Release.Name }}
+      heritage: {{ .Release.Service }}
+  strategy:
+    type: {{ .Values.pod.updateStrategyType }}
+  template:
+    metadata:
+    {{- if .Values.podAnnotations }}
+      annotations:
+{{ toYaml .Values.podAnnotations | indent 8 }}
+    {{- end }}
+      labels:
+        app: checkmk
+        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+        release: {{ .Release.Name }}
+        heritage: {{ .Release.Service }}
+    spec:
+      hostNetwork: {{ .Values.pod.useNodeNetworkInterface }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.internalPort }}
+      {{- if .Values.pod.enableLivestatusTCP }}
+        - containerPort: 6557
+      {{- end }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.pod.livenessProbe.path }}
+            port: {{ .Values.service.internalPort }}
+          initialDelaySeconds: {{ .Values.pod.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.pod.livenessProbe.periodSeconds }}
+          failureThreshold: {{ .Values.pod.livenessProbe.failureThreshold }}
+        {{- if .Values.pod.livenessProbe.timeoutSeconds }}
+          timeoutSeconds: {{ .Values.pod.livenessProbe.timeoutSeconds }}
+        {{- end }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.pod.readinessProbe.path }}
+            port: {{ .Values.service.internalPort }}
+          initialDelaySeconds: {{ .Values.pod.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.pod.readinessProbe.periodSeconds }}
+          failureThreshold: {{ .Values.pod.readinessProbe.failureThreshold }}
+        {{- if .Values.pod.readinessProbe.timeoutSeconds }}
+          timeoutSeconds: {{ .Values.pod.readinessProbe.timeoutSeconds }}
+        {{- end }}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
+        env:
+        {{- if .Values.pod.enableLivestatusTCP }}
+          - name: CMK_LIVESTATUS_TCP
+            value: "on -p 6557:6557"
+        {{- end }}
+        {{- range .Values.pod.additionalEnvs }}
+          - name: {{ .name }}
+            value: {{ .value }}
+        {{- end }}
+        {{- range .Values.pod.additionalEnvsFromSecrets }}
+          - name: {{ .env }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ .secretName }}
+                key: {{ .secretKey }}
+        {{- end }}
+        volumeMounts:
+        {{- if .Values.pod.useNodeTime }}
+          - name: timezone-config
+            mountPath: /etc/localtime
+        {{- end }}
+          - mountPath: /omd/sites
+            name: checkmk-data
+      imagePullSecrets:
+      - name: {{ .Values.image.pullSecret }}
+      volumes:
+      {{- if .Values.pod.useNodeTime }}
+        - name: timezone-config
+          hostPath:
+            path: "/usr/share/zoneinfo/{{ .Values.pod.nodeTimeZone }}"
+      {{- end }}
+        - name: checkmk-data
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (printf "%s-%s" (.Release.Name) "data") | quote  }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}

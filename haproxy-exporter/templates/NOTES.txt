@@ -1,0 +1,2 @@
+1. Deployed image:
+{{ .Values.image.repository }}:{{ .Values.image.tag }}
