@@ -1,0 +1,8 @@
+{{- if .Values.custom_certs.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: node-configurator-custom-certs
+data:
+  {{ .Values.custom_certs.certs }}
+{{- end }}

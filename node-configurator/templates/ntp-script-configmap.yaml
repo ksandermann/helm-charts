@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configure-ntp
+data:
+  run.sh: |
+    #!/bin/bash
+
+    echo "Starting ntp configuration script..."
+
+    if [ -f /custom-ntp/run.sh ]; then
+        echo " -> Found myself - will copy to host"
+        CONTENTS="$(cat /custom-ntp/run.sh | base64)"
+        echo " -> writing myself to /tmp/run-ntp.sh on host..."
+        nsenter -t 1 -m -u -i -n -p /bin/bash -c "echo '${CONTENTS}' | base64 --decode >/tmp/run-ntp.sh"
+        echo " -> executing myself in host namespace..."
+        exec nsenter -t 1 -m -u -i -n -p /bin/bash /tmp/run-ntp.sh "$@"
+        exit 0
+    fi
+
+    VERSION=`lsb_release -is`
+    if [ "$VERSION" != "Ubuntu" ]
+    then
+      echo "************************************************************************************************************"
+      echo "* WARNING - THIS NTP CONFIGURATOR IS ONLY COMPATIBLE WITH UBUNTU. YOU ARE RUNNING IT ON A DIFFERENT SYSTEM *"
+      echo "************************************************************************************************************"
+    fi
+
+    NTP_SERVERS="ntp.airplus.net 10.100.88.164"
+
+    echo "Updating ntp configuration..."
+
+    if grep -q "ntp.airplus.net" /etc/systemd/timesyncd.conf; then
+      echo " -> time server already configured"
+    else
+      echo " -> setting AirPlus NTP..."
+      echo "NTP=$NTP_SERVERS" >> /etc/systemd/timesyncd.conf
+      echo " -> Updated /etc/systemd/timesyncd.conf:"
+      cat /etc/systemd/timesyncd.conf
+
+      echo " -> restarting timesyncd"
+
+      systemctl stop systemd-timesyncd
+      systemctl start systemd-timesyncd
+
+      journalctl -u systemd-timesyncd
+
+      echo "done"
+    fi
+
+    echo "finished. exiting now."
