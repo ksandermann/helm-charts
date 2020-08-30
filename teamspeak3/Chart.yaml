@@ -1,7 +1,7 @@
 apiVersion: v1
 description: teamspeak3 server
 engine: gotpl
-home: https://github.com/ksandermann/teamspeak-helm-chart
+home: https://ksandermann.github.io/helm-charts/
 keywords:
 - teamspeak3
 maintainers:

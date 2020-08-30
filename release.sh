@@ -6,6 +6,8 @@ WORKDIR=$(pwd)
 HELM_BIN="/usr/local/bin/helm3"
 
 declare -a chartlist=(
+"checkmk"
+"haproxy-exporter"
 "teamspeak3"
 )
 
@@ -17,4 +19,4 @@ do
 done
 
 cd ${WORKDIR}
-$HELM_BIN repo index --url https://github.com/ksandermann/helm-charts/ --merge ./index.yaml .
+$HELM_BIN repo index --url https://ksandermann.github.io/helm-charts/ --merge ./index.yaml .
