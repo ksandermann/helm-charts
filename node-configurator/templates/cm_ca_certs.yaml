@@ -1,8 +1,15 @@
-{{- if .Values.custom_certs.enabled }}
+{{- if .Values.customCerts.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: node-configurator-custom-certs
+  annotations:
+{{- range .Values.customCerts.certs }}
+{{ .name | indent 4 }}: {{ .description | quote }}
+{{- end }}
 data:
-  {{ .Values.custom_certs.certs }}
+{{- range .Values.customCerts.certs }}
+{{ .name | indent 2 }}: |
+{{ .cert | indent 4 }}
+{{- end }}
 {{- end }}

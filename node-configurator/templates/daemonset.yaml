@@ -8,28 +8,32 @@ spec:
       app: node-configurator
   template:
     metadata:
+      annotations:
+        checksum/certs: {{ include (print $.Template.BasePath "/cm_ca_certs.yaml") . | sha256sum }}
+        checksum/scripts: {{ include (print $.Template.BasePath "/cm_scripts.yaml") . | sha256sum }}
       labels:
         app: node-configurator
     spec:
       hostPID: true
       terminationGracePeriodSeconds: 30
       initContainers:
-{{- if .Values.custom_certs.enabled }}
-        - name: copy-custom-certs-to-host
-          command: [ "/bin/bash", "-c", "--" ]
-          args: [ "mkdir-p /host/ca-certs/node-configurator; cp -f /configmaps/custom-certs/* /host/ca-certs/node-configurator" ]
-          image: {{ .Values.nsenter.image }}:{{ .Values.nsenter.tag }}
+{{- if .Values.customCerts.enabled }}
+        - name: copy-certs
+          command: [ "/bin/bash", "-c", "/configmaps/scripts/copy_certs.sh" ]
+          image: ubuntu:18.04
           imagePullPolicy: {{ .Values.nsenter.pullPolicy }}
           resources:
 {{ toYaml .Values.nsenter.resources | trim | indent 12 }}
           volumeMounts:
+          - name: scripts
+            mountPath: /configmaps/scripts
           - name: host-ca-certs
             mountPath: /host/ca-certs
             readOnly: false
           - name: configmap-custom-certs
             mountPath: /configmaps/custom-certs
             readOnly: true
-        - name: udpate-ca-certificates-on-host
+        - name: update-ca
           command: ["/nsenter", "--all", "--target=1", "sh", "-c", "/usr/sbin/update-ca-certificates"]
           image: {{ .Values.nsenter.image }}:{{ .Values.nsenter.tag }}
           imagePullPolicy: {{ .Values.nsenter.pullPolicy }}
@@ -39,7 +43,7 @@ spec:
             privileged: true
 {{- end }}
         - name: restart-docker-daemon
-          command: ["/nsenter", "--all", "--target=1", "sh", "-c", "systemctl restart docker"]
+          command: ["/nsenter", "--all", "--target=1", "sh", "-c", "systemctl restart docker; systemctl status docker"]
           image: {{ .Values.nsenter.image }}:{{ .Values.nsenter.tag }}
           imagePullPolicy: {{ .Values.nsenter.pullPolicy }}
           resources:
@@ -59,13 +63,18 @@ spec:
             limits:
               cpu: "1"
               memory: "1048Mi"
-          command: ["sleep 7200"]
+          command: [ "/bin/bash", "-c", "--" ]
+          args: [ "sleep 10000" ]
       volumes:
+        - name: scripts
+          configMap:
+            name: node-configurator-scripts
+            defaultMode: 0700
+{{- if .Values.customCerts.enabled }}
         - name: host-ca-certs
           hostPath:
             path: /usr/local/share/ca-certificates
             type: Directory
-{{- if .Values.custom_certs.enabled }}
         - name: configmap-custom-certs
           configMap:
             name: node-configurator-custom-certs

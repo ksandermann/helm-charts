@@ -1,44 +1,44 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: configure-certs
-data:
-  run.sh: |
-    #!/bin/bash
+{{/*apiVersion: v1*/}}
+{{/*kind: ConfigMap*/}}
+{{/*metadata:*/}}
+{{/*  name: configure-certs*/}}
+{{/*data:*/}}
+{{/*  run.sh: |*/}}
+{{/*    #!/bin/bash*/}}
 
-    echo "Starting certs configuration script..."
+{{/*    echo "Starting certs configuration script..."*/}}
 
-    if [ -f /custom-certs/run.sh ]; then
-        echo " -> Found myself - will copy to host"
-        CONTENTS="$(cat /custom-certs/run.sh | base64)"
-        echo " -> writing myself to /tmp/run-certs.sh on host..."
-        nsenter -t 1 -m -u -i -n -p /bin/bash -c "echo '${CONTENTS}' | base64 --decode >/tmp/run-certs.sh"
-        echo " -> executing myself in host namespace..."
-        exec nsenter -t 1 -m -u -i -n -p /bin/bash /tmp/run-certs.sh "$@"
-        exit 0
-    fi
+{{/*    if [ -f /custom-certs/run.sh ]; then*/}}
+{{/*        echo " -> Found myself - will copy to host"*/}}
+{{/*        CONTENTS="$(cat /custom-certs/run.sh | base64)"*/}}
+{{/*        echo " -> writing myself to /tmp/run-certs.sh on host..."*/}}
+{{/*        nsenter -t 1 -m -u -i -n -p /bin/bash -c "echo '${CONTENTS}' | base64 --decode >/tmp/run-certs.sh"*/}}
+{{/*        echo " -> executing myself in host namespace..."*/}}
+{{/*        exec nsenter -t 1 -m -u -i -n -p /bin/bash /tmp/run-certs.sh "$@"*/}}
+{{/*        exit 0*/}}
+{{/*    fi*/}}
 
-    VERSION=`lsb_release -is`
-    if [ "$VERSION" != "Ubuntu" ]
-    then
-      echo "************************************************************************************************************"
-      echo "* WARNING - THIS CONFIGURATOR IS ONLY COMPATIBLE WITH UBUNTU. YOU ARE RUNNING IT ON A DIFFERENT SYSTEM *"
-      echo "************************************************************************************************************"
-    fi
+{{/*    VERSION=`lsb_release -is`*/}}
+{{/*    if [ "$VERSION" != "Ubuntu" ]*/}}
+{{/*    then*/}}
+{{/*      echo "************************************************************************************************************"*/}}
+{{/*      echo "* WARNING - THIS CONFIGURATOR IS ONLY COMPATIBLE WITH UBUNTU. YOU ARE RUNNING IT ON A DIFFERENT SYSTEM *"*/}}
+{{/*      echo "************************************************************************************************************"*/}}
+{{/*    fi*/}}
 
-    if [[ ! -f /usr/local/share/ca-certificates/APWECESRCA001.crt ]]; then
-      rm -f /usr/local/share/ca-certificates/*.crt
-      cp -f /tmp/ca-certificates/*.crt /usr/local/share/ca-certificates/
-      /usr/sbin/update-ca-certificates \
-        --certsconf /etc/ca-certificates.conf \
-        --certsdir /usr/share/ca-certificates \
-        --localcertsdir /usr/local/share/ca-certificates \
-        --etccertsdir /etc/ssl/certs \
-        --hooksdir /etc/ca-certificates/update.d \
-        --verbose
+{{/*    if [[ ! -f /usr/local/share/ca-certificates/APWECESRCA001.crt ]]; then*/}}
+{{/*      rm -f /usr/local/share/ca-certificates/*.crt*/}}
+{{/*      cp -f /tmp/ca-certificates/*.crt /usr/local/share/ca-certificates/*/}}
+{{/*      /usr/sbin/update-ca-certificates \*/}}
+{{/*        --certsconf /etc/ca-certificates.conf \*/}}
+{{/*        --certsdir /usr/share/ca-certificates \*/}}
+{{/*        --localcertsdir /usr/local/share/ca-certificates \*/}}
+{{/*        --etccertsdir /etc/ssl/certs \*/}}
+{{/*        --hooksdir /etc/ca-certificates/update.d \*/}}
+{{/*        --verbose*/}}
 
-      echo "done"
-      exit 0
-    fi
+{{/*      echo "done"*/}}
+{{/*      exit 0*/}}
+{{/*    fi*/}}
 
-    echo "certs already installed"
+{{/*    echo "certs already installed"*/}}

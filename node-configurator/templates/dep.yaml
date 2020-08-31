@@ -1,131 +1,131 @@
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
-  name: customizer
-spec:
-  selector:
-    matchLabels:
-      name: customizer
-  template:
-    metadata:
-      labels:
-        name: customizer
-    spec:
-      serviceAccountName: jenkins
-      hostPID: true
-      terminationGracePeriodSeconds: 30
-      hostNetwork: true
-      hostIPC: true
-      initContainers:
-      - name: sysctl
-        image: "{{ .Values.registry }}/{{ .Values.repository }}:{{ .Values.tag }}"
-        imagePullPolicy: IfNotPresent
-        securityContext:
-          privileged: true
-        resources:
-          requests:
-            cpu: "0.1"
-            memory: "128Mi"
-          limits:
-            cpu: "1"
-            memory: "1048Mi"
-        volumeMounts:
-        - name: host-sys
-          mountPath: /sys
-        command:
-        - /bin/sh
-        - -c
-        - sysctl -w fs.inotify.max_user_watches=524288;
-      - name: update-ca-certificates
-        image: "{{ .Values.registry }}/{{ .Values.repository }}:{{ .Values.tag }}"
-        imagePullPolicy: IfNotPresent
-        securityContext:
-          privileged: true
-        resources:
-          requests:
-            cpu: "0.1"
-            memory: "128Mi"
-          limits:
-            cpu: "1"
-            memory: "256Mi"
-        volumeMounts:
-        - name: host-tmp
-          mountPath: /host/tmp
-          readOnly: false
-        - name: configmap-localcertsdir
-          mountPath: /configmap/ca-certificates
-          readOnly: true
-        - name: certs-configurator
-          mountPath: /custom-certs
-          readOnly: false
-        command: [ "/bin/bash", "-c", "--" ]
-        args: [ "mkdir -p /host/tmp/ca-certificates; rm -f /host/tmp/ca-certificates/*; cp -f /configmap/ca-certificates/*.crt /host/tmp/ca-certificates/; bash /custom-certs/run.sh" ]
-      - name: restart-docker
-        command: ["/nsenter", "--all", "--target=1", "sh", "-c", "systemctl restart docker"]
-        image: ksandermann/nsenter:2.34
-        imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "0.1"
-            memory: "128Mi"
-          limits:
-            cpu: "0.1"
-            memory: "128Mi"
-        securityContext:
-          privileged: true
-        stdin: true
-        tty: true
-      - name: configure-ntp
-        image: "{{ .Values.registry }}/{{ .Values.repository }}:{{ .Values.tag }}"
-        imagePullPolicy: IfNotPresent
-        securityContext:
-          privileged: true
-        resources:
-          requests:
-            cpu: "0.1"
-            memory: "128Mi"
-          limits:
-            cpu: "1"
-            memory: "1048Mi"
-        volumeMounts:
-        - name: ntp-configurator
-          mountPath: /custom-ntp
-          readOnly: false
-        command: [ "/bin/bash", "-c", "--" ]
-        args: [ "bash /custom-ntp/run.sh" ]
-      containers:
-        - name: shell
-          image: "{{ .Values.registry }}/{{ .Values.repository }}:{{ .Values.tag }}"
-          imagePullPolicy: IfNotPresent
-          securityContext:
-            privileged: true
-          resources:
-            requests:
-              cpu: "0.1"
-              memory: "128Mi"
-            limits:
-              cpu: "1"
-              memory: "1048Mi"
-          command: ["/usr/bin/tail"]
-          args: ["-f", "/dev/null"]
-      volumes:
-      - name: host-sys
-        hostPath:
-          path: /sys
-      - name: host-root
-        hostPath:
-          path: /
-          type: Directory
-      - name: host-tmp
-        hostPath:
-          path: /tmp
-          type: Directory
-      - name: configmap-localcertsdir
-        configMap:
-          name: customizer-ca-certificates
-      - name: ntp-configurator
-        configMap:
-          name: configure-ntp
-      - name: certs-configurator
-        configMap:
-          name: configure-certs
+{{/*apiVersion: apps/v1*/}}
+{{/*kind: DaemonSet*/}}
+{{/*metadata:*/}}
+{{/*  name: customizer*/}}
+{{/*spec:*/}}
+{{/*  selector:*/}}
+{{/*    matchLabels:*/}}
+{{/*      name: customizer*/}}
+{{/*  template:*/}}
+{{/*    metadata:*/}}
+{{/*      labels:*/}}
+{{/*        name: customizer*/}}
+{{/*    spec:*/}}
+{{/*      serviceAccountName: jenkins*/}}
+{{/*      hostPID: true*/}}
+{{/*      terminationGracePeriodSeconds: 30*/}}
+{{/*      hostNetwork: true*/}}
+{{/*      hostIPC: true*/}}
+{{/*      initContainers:*/}}
+{{/*      - name: sysctl*/}}
+{{/*        image: "{{ .Values.registry }}/{{ .Values.repository }}:{{ .Values.tag }}"*/}}
+{{/*        imagePullPolicy: IfNotPresent*/}}
+{{/*        securityContext:*/}}
+{{/*          privileged: true*/}}
+{{/*        resources:*/}}
+{{/*          requests:*/}}
+{{/*            cpu: "0.1"*/}}
+{{/*            memory: "128Mi"*/}}
+{{/*          limits:*/}}
+{{/*            cpu: "1"*/}}
+{{/*            memory: "1048Mi"*/}}
+{{/*        volumeMounts:*/}}
+{{/*        - name: host-sys*/}}
+{{/*          mountPath: /sys*/}}
+{{/*        command:*/}}
+{{/*        - /bin/sh*/}}
+{{/*        - -c*/}}
+{{/*        - sysctl -w fs.inotify.max_user_watches=524288;*/}}
+{{/*      - name: update-ca-certificates*/}}
+{{/*        image: "{{ .Values.registry }}/{{ .Values.repository }}:{{ .Values.tag }}"*/}}
+{{/*        imagePullPolicy: IfNotPresent*/}}
+{{/*        securityContext:*/}}
+{{/*          privileged: true*/}}
+{{/*        resources:*/}}
+{{/*          requests:*/}}
+{{/*            cpu: "0.1"*/}}
+{{/*            memory: "128Mi"*/}}
+{{/*          limits:*/}}
+{{/*            cpu: "1"*/}}
+{{/*            memory: "256Mi"*/}}
+{{/*        volumeMounts:*/}}
+{{/*        - name: host-tmp*/}}
+{{/*          mountPath: /host/tmp*/}}
+{{/*          readOnly: false*/}}
+{{/*        - name: configmap-localcertsdir*/}}
+{{/*          mountPath: /configmap/ca-certificates*/}}
+{{/*          readOnly: true*/}}
+{{/*        - name: certs-configurator*/}}
+{{/*          mountPath: /custom-certs*/}}
+{{/*          readOnly: false*/}}
+{{/*        command: [ "/bin/bash", "-c", "--" ]*/}}
+{{/*        args: [ "mkdir -p /host/tmp/ca-certificates; rm -f /host/tmp/ca-certificates/*; cp -f /configmap/ca-certificates/*.crt /host/tmp/ca-certificates/; bash /custom-certs/run.sh" ]*/}}
+{{/*      - name: restart-docker*/}}
+{{/*        command: ["/nsenter", "--all", "--target=1", "sh", "-c", "systemctl restart docker"]*/}}
+{{/*        image: ksandermann/nsenter:2.34*/}}
+{{/*        imagePullPolicy: IfNotPresent*/}}
+{{/*        resources:*/}}
+{{/*          requests:*/}}
+{{/*            cpu: "0.1"*/}}
+{{/*            memory: "128Mi"*/}}
+{{/*          limits:*/}}
+{{/*            cpu: "0.1"*/}}
+{{/*            memory: "128Mi"*/}}
+{{/*        securityContext:*/}}
+{{/*          privileged: true*/}}
+{{/*        stdin: true*/}}
+{{/*        tty: true*/}}
+{{/*      - name: configure-ntp*/}}
+{{/*        image: "{{ .Values.registry }}/{{ .Values.repository }}:{{ .Values.tag }}"*/}}
+{{/*        imagePullPolicy: IfNotPresent*/}}
+{{/*        securityContext:*/}}
+{{/*          privileged: true*/}}
+{{/*        resources:*/}}
+{{/*          requests:*/}}
+{{/*            cpu: "0.1"*/}}
+{{/*            memory: "128Mi"*/}}
+{{/*          limits:*/}}
+{{/*            cpu: "1"*/}}
+{{/*            memory: "1048Mi"*/}}
+{{/*        volumeMounts:*/}}
+{{/*        - name: ntp-configurator*/}}
+{{/*          mountPath: /custom-ntp*/}}
+{{/*          readOnly: false*/}}
+{{/*        command: [ "/bin/bash", "-c", "--" ]*/}}
+{{/*        args: [ "bash /custom-ntp/run.sh" ]*/}}
+{{/*      containers:*/}}
+{{/*        - name: shell*/}}
+{{/*          image: "{{ .Values.registry }}/{{ .Values.repository }}:{{ .Values.tag }}"*/}}
+{{/*          imagePullPolicy: IfNotPresent*/}}
+{{/*          securityContext:*/}}
+{{/*            privileged: true*/}}
+{{/*          resources:*/}}
+{{/*            requests:*/}}
+{{/*              cpu: "0.1"*/}}
+{{/*              memory: "128Mi"*/}}
+{{/*            limits:*/}}
+{{/*              cpu: "1"*/}}
+{{/*              memory: "1048Mi"*/}}
+{{/*          command: ["/usr/bin/tail"]*/}}
+{{/*          args: ["-f", "/dev/null"]*/}}
+{{/*      volumes:*/}}
+{{/*      - name: host-sys*/}}
+{{/*        hostPath:*/}}
+{{/*          path: /sys*/}}
+{{/*      - name: host-root*/}}
+{{/*        hostPath:*/}}
+{{/*          path: /*/}}
+{{/*          type: Directory*/}}
+{{/*      - name: host-tmp*/}}
+{{/*        hostPath:*/}}
+{{/*          path: /tmp*/}}
+{{/*          type: Directory*/}}
+{{/*      - name: configmap-localcertsdir*/}}
+{{/*        configMap:*/}}
+{{/*          name: customizer-ca-certificates*/}}
+{{/*      - name: ntp-configurator*/}}
+{{/*        configMap:*/}}
+{{/*          name: configure-ntp*/}}
+{{/*      - name: certs-configurator*/}}
+{{/*        configMap:*/}}
+{{/*          name: configure-certs*/}}
