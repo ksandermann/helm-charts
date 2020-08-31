@@ -1,0 +1,5 @@
+- ntp
+- linting
+- kubectl get events um node restarts mitzurkriegen
+- feature für custom command 
+- anderes projekt mit nsenter shell auf host

@@ -17,10 +17,21 @@ spec:
       hostPID: true
       terminationGracePeriodSeconds: 30
       initContainers:
+        - name: preflight-checks
+          command: [ "/bin/bash", "-c", "/configmaps/scripts/preflight_checks.sh" ]
+          image: {{ .Values.nsenter.image }}:{{ .Values.nsenter.tag }}
+          imagePullPolicy: {{ .Values.nsenter.pullPolicy }}
+          securityContext:
+            privileged: true
+          resources:
+{{ toYaml .Values.nsenter.resources | trim | indent 12 }}
+          volumeMounts:
+          - name: scripts
+            mountPath: /configmaps/scripts
 {{- if .Values.customCerts.enabled }}
         - name: copy-certs
           command: [ "/bin/bash", "-c", "/configmaps/scripts/copy_certs.sh" ]
-          image: ubuntu:18.04
+          image: {{ .Values.nsenter.image }}:{{ .Values.nsenter.tag }}
           imagePullPolicy: {{ .Values.nsenter.pullPolicy }}
           resources:
 {{ toYaml .Values.nsenter.resources | trim | indent 12 }}
@@ -34,18 +45,24 @@ spec:
             mountPath: /configmaps/custom-certs
             readOnly: true
         - name: update-ca
-          command: ["/nsenter", "--all", "--target=1", "sh", "-c", "/usr/sbin/update-ca-certificates"]
+          command: ["/bin/bash", "-c", "/configmaps/scripts/update_ca.sh"]
           image: {{ .Values.nsenter.image }}:{{ .Values.nsenter.tag }}
           imagePullPolicy: {{ .Values.nsenter.pullPolicy }}
+          volumeMounts:
+          - name: scripts
+            mountPath: /configmaps/scripts
           resources:
 {{ toYaml .Values.nsenter.resources | trim | indent 12 }}
           securityContext:
             privileged: true
 {{- end }}
         - name: restart-docker-daemon
-          command: ["/nsenter", "--all", "--target=1", "sh", "-c", "systemctl restart docker; systemctl status docker"]
+          command: ["/bin/bash", "-c", "/configmaps/scripts/restart_docker.sh"]
           image: {{ .Values.nsenter.image }}:{{ .Values.nsenter.tag }}
           imagePullPolicy: {{ .Values.nsenter.pullPolicy }}
+          volumeMounts:
+          - name: scripts
+            mountPath: /configmaps/scripts
           resources:
 {{ toYaml .Values.nsenter.resources | trim | indent 12 }}
           securityContext:

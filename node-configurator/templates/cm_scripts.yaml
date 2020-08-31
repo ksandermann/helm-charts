@@ -5,31 +5,35 @@ metadata:
 data:
   preflight_checks.sh: |
     #!/bin/bash
-    echo "checking if Node running Ubuntu..."
-    if [ -n "$(uname -a | grep Ubuntu)" ]; then
-      echo "SUCCESS - Ubuntu detected"
-    else
-      echo "FAILED - No Ubuntu detected - shutting down."
-      exit 1
-    fi
 
     echo "checking if nsenter to Node works ..."
-    if [ -n "$(/nsenter --all --target=1 -- sh -c uptime)" ]; then
+    if [ -n "$(nsenter --all --target=1 -- sh -c uptime)" ]; then
       echo "SUCCESS"
     else
       echo "FAILED - nsenter not working on your Node - shutting down."
       exit 1
     fi
 
+    echo "checking if Node running Ubuntu..."
+    NODE_UNAME=$(nsenter --all --target=1 -- sh -c "uname -a")
+    echo $NODE_UNAME
+    if [ -n "$( echo $NODE_UNAME | grep Ubuntu)" ]; then
+      echo "SUCCESS - Ubuntu detected"
+    else
+      echo "FAILED - No Ubuntu detected - shutting down."
+      exit 1
+    fi
+
     echo "checking if Node runs docker daemon ..."
-    DOCKER_STATUS=$(/nsenter --all --target=1 -- sh -c systemctl status docker)
-    echo $DOCKER_STATUS
-    if [ $DOCKER_STATUS == *"running"* ]; then
-      echo "SUCCESS"
+    DOCKER_STATUS=$(nsenter --all --target=1 -- sh -c systemctl status docker)
+    if [[ "$DOCKER_STATUS" == *"running"* ]]; then
+      echo "SUCCESS - docker daemon detected"
     else
       echo "FAILED - docker daemon not running on your Node - shutting down."
       exit 1
     fi
+
+    echo SUCESS - ALL PREFLIGHT CHECKS PASSED, CONTINUING
 
   copy_certs.sh: |
     #!/bin/bash
@@ -45,13 +49,15 @@ data:
 
   update_ca.sh: |
     #!/bin/bash
+    echo "updating trusted certificates on Node..."
     echo "calling on host - /usr/sbin/update-ca-certificates"
-    /nsenter --all --target=1 -- sh -c /usr/sbin/update-ca-certificates
+    nsenter --all --target=1 -- sh -c /usr/sbin/update-ca-certificates
 
   restart_docker.sh: |
     #!/bin/bash
-    echo "calling on host - /nsenter --all --target=1 -- sh -c systemctl restart docker; systemctl status docker"
-    /nsenter --all --target=1 -- sh -c systemctl restart docker; systemctl status docker
+    echo "restarting docker daemon on host"
+    echo "calling on host - systemctl restart docker; systemctl status docker"
+    nsenter --all --target=1 -- sh -c "systemctl restart docker; systemctl status docker"
 
   run.sh: |
     #!/bin/bash

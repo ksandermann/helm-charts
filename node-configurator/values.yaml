@@ -1,11 +1,11 @@
-registry: docker.io
-repository: ubuntu
-tag: 16.04
+registry: cloud-toolbox
+repository: ksandermann
+tag: latest
 
 
 nsenter:
-  image: ksandermann/nsenter
-  tag: 2.34
+  image: ksandermann/cloud-toolbox
+  tag: latest
   pullPolicy: IfNotPresent
   resources:
     requests:
