@@ -3,9 +3,9 @@ entries:
   checkmk:
   - apiVersion: v1
     appVersion: 1.5.0p12
-    created: "2021-01-03T15:22:22.2349648+01:00"
+    created: "2021-01-03T22:17:22.720960807Z"
     description: checkmk helm chart
-    digest: b23fb1841a887f5d4b93e446737fd5ccd6ae5cedb09dea1a2edcb29012978396
+    digest: f53301874c42fe1c338d205d5d639eaadfde11c1ae736e13a0ca66688562de00
     home: http://charts.sandermann.cloud/
     keywords:
     - checkmk
@@ -22,9 +22,9 @@ entries:
   haproxy-exporter:
   - apiVersion: v1
     appVersion: v0.10.0
-    created: "2021-01-03T15:22:22.2358538+01:00"
+    created: "2021-01-03T22:17:22.746616947Z"
     description: haproxy-exporter
-    digest: 4aaedf51e44a8b9d109eb0bfb49d937e8166a98ebb82fe3cc26cef63cee1c781
+    digest: 2d35b267a0856c3c8c009fc5473c9cf0aac45f3f28c6434810ecf68e360cb10e
     home: http://charts.sandermann.cloud/
     keywords:
     - haproxy
@@ -43,9 +43,9 @@ entries:
   teamspeak3:
   - apiVersion: v1
     appVersion: 3.13.3
-    created: "2021-01-03T15:22:22.2378861+01:00"
+    created: "2021-01-03T22:17:22.793354568Z"
     description: teamspeak3 server
-    digest: 1ab34c018322e319d3dfd81e622a21f46253fc4ed20db7c0317b3c327a6f5555
+    digest: 4cd0718baa7ce55ad77b486a0236d3d643b8c01d73be4f7c4ea68cf2e6c1f695
     home: http://charts.sandermann.cloud/
     keywords:
     - teamspeak3
@@ -60,7 +60,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: 3.12.1
-    created: "2021-01-03T15:22:22.2367662+01:00"
+    created: "2021-01-03T22:17:22.765200464Z"
     description: teamspeak3 server
     digest: 97aaec6c8aa1acb60cadcc41f47612ffb33cff6fe47464c991c8fa0aaa8d23aa
     home: http://charts.sandermann.cloud/
@@ -75,4 +75,4 @@ entries:
     urls:
     - https://ksandermann.github.io/helm-charts/teamspeak3/teamspeak3-0.2.1.tgz
     version: 0.2.1
-generated: "2021-01-03T15:22:22.2321319+01:00"
+generated: "2021-01-03T22:17:22.692340663Z"
