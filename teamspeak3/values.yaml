@@ -1,6 +1,6 @@
 image:
   repository: teamspeak
-  tag: 3.12.1
+  tag: 3.13.3
   pullPolicy: Always
   ## Secret must be manually created in the namespace.
   # pullSecret: "nexus-pull-secret"
@@ -45,4 +45,4 @@ persistence:
   # annotations:
   #  "helm.sh/resource-policy": keep
   #storageClass: "azure-managed-ssd"
-  #storageSize: 2Gi
+  storageSize: 1Gi
