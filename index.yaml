@@ -3,7 +3,7 @@ entries:
   checkmk:
   - apiVersion: v1
     appVersion: 1.5.0p12
-    created: "2021-06-06T12:47:23.553241+02:00"
+    created: "2021-06-06T13:48:52.172055+02:00"
     description: checkmk helm chart
     digest: f53301874c42fe1c338d205d5d639eaadfde11c1ae736e13a0ca66688562de00
     home: http://charts.sandermann.cloud/
@@ -22,7 +22,7 @@ entries:
   haproxy-exporter:
   - apiVersion: v1
     appVersion: v0.10.0
-    created: "2021-06-06T12:47:23.554483+02:00"
+    created: "2021-06-06T13:48:52.173858+02:00"
     description: haproxy-exporter
     digest: 2d35b267a0856c3c8c009fc5473c9cf0aac45f3f28c6434810ecf68e360cb10e
     home: http://charts.sandermann.cloud/
@@ -43,9 +43,9 @@ entries:
   teamspeak3:
   - apiVersion: v1
     appVersion: 3.13.5
-    created: "2021-06-06T12:47:23.559728+02:00"
+    created: "2021-06-06T13:48:52.180019+02:00"
     description: teamspeak3 server
-    digest: 20ba57376a32e7c04ad8bb342943ee35eab8a7433c60d0584aa72af733982c6a
+    digest: b7bf8dceeab795af60d9a40fb8dda7eced8c59e83d43e2d9bd28a00d831dae51
     home: http://charts.sandermann.cloud/
     keywords:
     - teamspeak3
@@ -60,7 +60,7 @@ entries:
     version: 0.3.1
   - apiVersion: v1
     appVersion: 3.13.3
-    created: "2021-06-06T12:47:23.557201+02:00"
+    created: "2021-06-06T13:48:52.176634+02:00"
     description: teamspeak3 server
     digest: 4cd0718baa7ce55ad77b486a0236d3d643b8c01d73be4f7c4ea68cf2e6c1f695
     home: http://charts.sandermann.cloud/
@@ -77,7 +77,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: 3.12.1
-    created: "2021-06-06T12:47:23.555579+02:00"
+    created: "2021-06-06T13:48:52.174995+02:00"
     description: teamspeak3 server
     digest: 97aaec6c8aa1acb60cadcc41f47612ffb33cff6fe47464c991c8fa0aaa8d23aa
     home: http://charts.sandermann.cloud/
@@ -92,4 +92,4 @@ entries:
     urls:
     - https://ksandermann.github.io/helm-charts/teamspeak3/teamspeak3-0.2.1.tgz
     version: 0.2.1
-generated: "2021-06-06T12:47:23.552241+02:00"
+generated: "2021-06-06T13:48:52.169939+02:00"
