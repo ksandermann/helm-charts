@@ -3,12 +3,14 @@ set -euo pipefail
 IFS=$'\n\t'
 
 WORKDIR=$(pwd)
-HELM_BIN="/usr/local/bin/helm3"
+HELM_BIN="/usr/local/bin/helm"
 
+#"checkmk"
+#"haproxy-exporter"
 declare -a chartlist=(
+"teamspeak3"
 "checkmk"
 "haproxy-exporter"
-"teamspeak3"
 )
 
 for chart in "${chartlist[@]}";
