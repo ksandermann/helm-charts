@@ -1,6 +1,6 @@
 image:
   repository: teamspeak
-  tag: 3.13.3
+  tag: 3.13.5
   pullPolicy: Always
   ## Secret must be manually created in the namespace.
   # pullSecret: "nexus-pull-secret"

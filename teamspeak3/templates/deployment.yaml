@@ -54,8 +54,10 @@ spec:
         volumeMounts:
           - mountPath: /var/ts3server/
             name: teamspeak-data
+      {{- if .Values.image.pullSecret }}
       imagePullSecrets:
-      - name: {{ .Values.image.pullSecret }}
+        - name: {{ .Values.image.pullSecret }}
+      {{- end }}
       volumes:
         - name: teamspeak-data
         {{- if .Values.persistence.enabled }}
