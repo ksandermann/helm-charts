@@ -51,3 +51,7 @@ spec:
       {{- end }}
       imagePullSecrets:
       - name: {{ .Values.image.pullSecret }}
+    {{- with .Values.pod.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
