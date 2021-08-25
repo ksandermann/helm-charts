@@ -22,7 +22,28 @@ entries:
   haproxy-exporter:
   - apiVersion: v1
     appVersion: v0.12.0
-    created: "2021-07-21T16:14:39.310184+02:00"
+    created: "2021-08-25T14:11:42.398906+02:00"
+    description: haproxy-exporter
+    digest: 3a224bf5fc898ea3d607180f4b5b2dfd4f70b569ab3c607fcec3302064560b5a
+    engine: gotpl
+    home: http://charts.sandermann.cloud/
+    keywords:
+    - haproxy
+    - prometheus
+    - monitoring
+    - exporter
+    maintainers:
+    - email: kevin.sandermann@gmail.com
+      name: ksandermann
+    name: haproxy-exporter
+    sources:
+    - https://github.com/ksandermann/helm-charts/blob/master/haproxy-exporter
+    urls:
+    - https://ksandermann.github.io/helm-charts/haproxy-exporter/haproxy-exporter-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v1
+    appVersion: v0.12.0
+    created: "2021-06-06T13:48:52.173858+02:00"
     description: haproxy-exporter
     digest: f8e8605987b4c714a9438fb0bfd3c75c982601d205739737c70b3e2f91e8bd67
     home: http://charts.sandermann.cloud/
@@ -112,4 +133,4 @@ entries:
     urls:
     - https://ksandermann.github.io/helm-charts/teamspeak3/teamspeak3-0.2.1.tgz
     version: 0.2.1
-generated: "2021-06-06T13:48:52.169939+02:00"
+generated: "2021-08-25T14:11:42.388007+02:00"

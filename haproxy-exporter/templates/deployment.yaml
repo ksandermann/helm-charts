@@ -49,8 +49,10 @@ spec:
         resources:
 {{ toYaml .Values.resources | indent 12 }}
       {{- end }}
+      {{- if .Values.image.pullSecret }}
       imagePullSecrets:
       - name: {{ .Values.image.pullSecret }}
+      {{- end }}
     {{- with .Values.pod.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
