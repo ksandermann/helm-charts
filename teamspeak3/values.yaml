@@ -8,8 +8,13 @@ podAnnotations: {}
 ## only NodePort and LoadBalancer supported, as this is UDP traffic
 service:
   type: LoadBalancer
-  ## ip requests a specific IP address from the LoadBalancer (Supportd only for LoadBalancer)
+  ## ip requests a specific IP address from the LoadBalancer (Supported only for LoadBalancer)
   #ip: "IPAddress"
+  ## externalIPs define a manual value if you are using a Bare-Metal Kubernetes cluster (Supported only for LoadBalancer)
+  #externalIPs:
+  #  - 1.2.3.4
+  #  - 4.5.6.7
+  
   nodePort: 30987
   ## tcp.enabled creates the TCP service if true (supported only if your LB implementation suports both TCP and UDP)
   ## Needed until https://github.com/kubernetes/kubernetes/issues/23880 is implemented
@@ -18,6 +23,7 @@ service:
   ## known anotations:
     ## MetalLB - metallb.universe.tf/allow-shared-ip: [string]
     ## Azure CPI LB - service.beta.kubernetes.io/azure-load-balancer-mixed-protocols: [bool] (Not tested)
+
   tcp:
     enabled: false
     ## type sets the implementation type. Values either combined | seperate. See docs.
