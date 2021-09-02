@@ -16,6 +16,10 @@ spec:
   {{- if and (eq .Values.service.type "LoadBalancer") ( .Values.service.ip ) }}
   loadBalancerIP: {{ .Values.service.ip }}
   {{- end }}
+  {{- if and (eq .Values.service.type "LoadBalancer") ( .Values.service.externalIPs ) }}
+  externalIPs:
+  {{- toYaml .Values.service.externalIPs | nindent 6 }}
+  {{- end }}
   ports:
     - nodePort: {{ .Values.service.nodePort }}
       targetPort: 9987
