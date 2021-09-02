@@ -13,5 +13,5 @@ maintainers:
 name: haproxy-exporter
 sources:
   - https://github.com/ksandermann/helm-charts/blob/master/haproxy-exporter
-version: 1.0.2
+version: 1.0.3
 appVersion: v0.12.0

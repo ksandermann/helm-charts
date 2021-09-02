@@ -10,5 +10,5 @@ maintainers:
 name: teamspeak3
 sources:
 - https://github.com/ksandermann/helm-charts/blob/master/teamspeak3
-version: 0.3.1
+version: 0.3.2
 appVersion: 3.13.5

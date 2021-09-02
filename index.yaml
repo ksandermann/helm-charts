@@ -3,7 +3,25 @@ entries:
   checkmk:
   - apiVersion: v1
     appVersion: 1.5.0p12
-    created: "2021-06-06T13:48:52.172055+02:00"
+    created: "2021-09-02T08:08:34.049278916Z"
+    description: checkmk helm chart
+    digest: ecff7aaeedf74feb623bde98e7406d960deb706745419acf00a4e1dc3cbddda3
+    home: http://charts.sandermann.cloud/
+    keywords:
+    - checkmk
+    - monitoring
+    maintainers:
+    - email: kevin.sandermann@gmail.com
+      name: ksandermann
+    name: checkmk
+    sources:
+    - https://github.com/ksandermann/helm-charts/blob/master/checkmk
+    urls:
+    - https://ksandermann.github.io/helm-charts/checkmk/checkmk-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v1
+    appVersion: 1.5.0p12
+    created: "2021-09-02T08:08:34.043004566Z"
     description: checkmk helm chart
     digest: f53301874c42fe1c338d205d5d639eaadfde11c1ae736e13a0ca66688562de00
     home: http://charts.sandermann.cloud/
@@ -22,10 +40,29 @@ entries:
   haproxy-exporter:
   - apiVersion: v1
     appVersion: v0.12.0
-    created: "2021-08-25T14:11:42.398906+02:00"
+    created: "2021-09-02T08:08:34.076822629Z"
+    description: haproxy-exporter
+    digest: 6e2ae32d75e8eb5b92af3bc011d51c0d8aef27defa61c3fd3d1fb8a9352dc815
+    home: http://charts.sandermann.cloud/
+    keywords:
+    - haproxy
+    - prometheus
+    - monitoring
+    - exporter
+    maintainers:
+    - email: kevin.sandermann@gmail.com
+      name: ksandermann
+    name: haproxy-exporter
+    sources:
+    - https://github.com/ksandermann/helm-charts/blob/master/haproxy-exporter
+    urls:
+    - https://ksandermann.github.io/helm-charts/haproxy-exporter/haproxy-exporter-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v1
+    appVersion: v0.12.0
+    created: "2021-09-02T08:08:34.058600731Z"
     description: haproxy-exporter
     digest: 3a224bf5fc898ea3d607180f4b5b2dfd4f70b569ab3c607fcec3302064560b5a
-    engine: gotpl
     home: http://charts.sandermann.cloud/
     keywords:
     - haproxy
@@ -43,7 +80,7 @@ entries:
     version: 1.0.2
   - apiVersion: v1
     appVersion: v0.12.0
-    created: "2021-06-06T13:48:52.173858+02:00"
+    created: "2021-09-02T08:08:34.05525615Z"
     description: haproxy-exporter
     digest: f8e8605987b4c714a9438fb0bfd3c75c982601d205739737c70b3e2f91e8bd67
     home: http://charts.sandermann.cloud/
@@ -63,7 +100,7 @@ entries:
     version: 1.0.1
   - apiVersion: v1
     appVersion: v0.10.0
-    created: "2021-06-06T13:48:52.173858+02:00"
+    created: "2021-09-02T08:08:34.052347793Z"
     description: haproxy-exporter
     digest: 2d35b267a0856c3c8c009fc5473c9cf0aac45f3f28c6434810ecf68e360cb10e
     home: http://charts.sandermann.cloud/
@@ -84,7 +121,24 @@ entries:
   teamspeak3:
   - apiVersion: v1
     appVersion: 3.13.5
-    created: "2021-06-06T13:48:52.180019+02:00"
+    created: "2021-09-02T08:08:34.10399014Z"
+    description: teamspeak3 server
+    digest: 3761eba5774a9e8e70117f48d0c23559871e3ca6b81aba68dd8df966426e37c5
+    home: http://charts.sandermann.cloud/
+    keywords:
+    - teamspeak3
+    maintainers:
+    - email: kevin.sandermann@gmail.com
+      name: ksandermann
+    name: teamspeak3
+    sources:
+    - https://github.com/ksandermann/helm-charts/blob/master/teamspeak3
+    urls:
+    - https://ksandermann.github.io/helm-charts/teamspeak3/teamspeak3-0.3.2.tgz
+    version: 0.3.2
+  - apiVersion: v1
+    appVersion: 3.13.5
+    created: "2021-09-02T08:08:34.090381402Z"
     description: teamspeak3 server
     digest: b7bf8dceeab795af60d9a40fb8dda7eced8c59e83d43e2d9bd28a00d831dae51
     home: http://charts.sandermann.cloud/
@@ -101,7 +155,7 @@ entries:
     version: 0.3.1
   - apiVersion: v1
     appVersion: 3.13.3
-    created: "2021-06-06T13:48:52.176634+02:00"
+    created: "2021-09-02T08:08:34.084689546Z"
     description: teamspeak3 server
     digest: 4cd0718baa7ce55ad77b486a0236d3d643b8c01d73be4f7c4ea68cf2e6c1f695
     home: http://charts.sandermann.cloud/
@@ -118,7 +172,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: 3.12.1
-    created: "2021-06-06T13:48:52.174995+02:00"
+    created: "2021-09-02T08:08:34.080271914Z"
     description: teamspeak3 server
     digest: 97aaec6c8aa1acb60cadcc41f47612ffb33cff6fe47464c991c8fa0aaa8d23aa
     home: http://charts.sandermann.cloud/
@@ -133,4 +187,4 @@ entries:
     urls:
     - https://ksandermann.github.io/helm-charts/teamspeak3/teamspeak3-0.2.1.tgz
     version: 0.2.1
-generated: "2021-08-25T14:11:42.388007+02:00"
+generated: "2021-09-02T08:08:34.039400944Z"
