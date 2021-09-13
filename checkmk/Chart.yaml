@@ -11,5 +11,5 @@ maintainers:
 name: checkmk
 sources:
   - https://github.com/ksandermann/helm-charts/blob/master/checkmk
-version: 0.1.2
+version: 0.1.3
 appVersion: 1.5.0p12
