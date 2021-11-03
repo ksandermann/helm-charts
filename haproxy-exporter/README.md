@@ -8,7 +8,7 @@ Prometheus Exporter for HAProxy.
 ```bash
 helm repo add ksandermann http://charts.sandermann.cloud
 helm repo update
-helm install haproxy-exporter haproxy-exporter
+helm install haproxy-exporter-proxy1 ksandermann/haproxy-exporter
 ```
 
 ## Introduction
@@ -39,7 +39,7 @@ To install the chart with the release name `my-release`:
 ```bash
 helm repo add ksandermann http://charts.sandermann.cloud
 helm repo update
-helm install haproxy-exporter haproxy-exporter
+helm install haproxy-exporter-proxy1 ksandermann/haproxy-exporter
 ```
 
 The command deploys HAProxy Exporter on the Kubernetes cluster in the
@@ -56,16 +56,15 @@ Recommended installation:
 kubectl config set-context $(kubectl config current-context) --namespace=default
 
 helm upgrade haproxy-exporter-proxy1 \
-    haproxy-exporter \
+    ksandermann/haproxy-exporter \
     --install \
     --version 1.0.0 \
     --namespace default \
-    --recreate-pods \
     -f values.yaml \
     --dry-run
 
 helm upgrade haproxy-exporter-proxy1 \
-    haproxy-exporter \
+    ksandermann/haproxy-exporter \
     --install \
     --version 1.0.0 \
     --namespace default \
