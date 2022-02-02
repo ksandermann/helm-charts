@@ -1,14 +1,14 @@
 {{- if .Values.ingress.enabled -}}
-{{ $serviceName := .Release.Name        }}
+{{- $serviceName := include "haproxy-exporter.release_name" . }}
 {{- $servicePort := .Values.service.port -}}
 {{- $ingressPath := .Values.ingress.path -}}
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ include "haproxy-exporter.release_name" . }}
   labels:
     app: {{ .Chart.Name }}
-    release: {{ .Release.Name }}
+    release: {{ include "haproxy-exporter.release_name" . }}
     heritage: {{ .Release.Service }}
 {{- with .Values.ingress.annotations }}
   annotations:

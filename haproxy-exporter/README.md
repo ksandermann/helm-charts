@@ -102,6 +102,8 @@ values.
 | `pod.annotations`                             | Specify annotations for the pod            | `nil`                                                                                        |
 | `service.type`                                | Specify the service type                   | `ClusterIP`                                                                                  |
 | `service.port`                                | Specify the service port                   | `ClusterIP`                                                                                  |
-| `service.annotations`                         | Specify annotations for the service        | `prometheus.io/path: "/metrics"` `prometheus.io/port: "9101"` `prometheus.io/scrape: "true"` |   
+| `service.annotations`                         | Specify annotations for the service        | `prometheus.io/path: "/metrics"` `prometheus.io/port: "9101"` `prometheus.io/scrape: "true"` |
 | `resources`                                   | Kubernetes resources                       | `nil`                                                                                        |
 | `ingress`                                     | Kubernetes ingress configuration           | `nil`                                                                                        |
+| `release_name`                                | Override Release.Name                      | `nil`                                                                                        |
+| `release_suffix`                              | Suffix to add to Release.Name (if defined) | `nil`                                                                                        |

@@ -1,3 +1,6 @@
+release_suffix: null
+release_name: null
+
 image:
   repository: quay.io/prometheus/haproxy-exporter
   tag: v0.12.0
