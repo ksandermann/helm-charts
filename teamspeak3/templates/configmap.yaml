@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: teamspeak
+data:
+  allowlist.txt: |
+    {{- range .Values.configs.allowlist }}
+    {{ . }}
+    {{- end }}

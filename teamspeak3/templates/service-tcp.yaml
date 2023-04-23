@@ -1,4 +1,4 @@
-{{- if and (.Values.service.tcp.enabled) (eq .Values.service.tcp.type "seperate")}}
+{{- if and (.Values.service.tcp.enabled) (eq .Values.service.tcp.type "separate")}}
 apiVersion: v1
 kind: Service
 metadata:

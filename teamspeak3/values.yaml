@@ -1,6 +1,6 @@
 image:
   repository: teamspeak
-  tag: 3.13.5
+  tag: 3.13.7
   pullPolicy: Always
   ## Secret must be manually created in the namespace.
   # pullSecret: "nexus-pull-secret"
@@ -14,24 +14,23 @@ service:
   #externalIPs:
   #  - 1.2.3.4
   #  - 4.5.6.7
-  
-  nodePort: 30987
+
   ## tcp.enabled creates the TCP service if true (supported only if your LB implementation suports both TCP and UDP)
   ## Needed until https://github.com/kubernetes/kubernetes/issues/23880 is implemented
   ## See https://github.com/janosi/enhancements/blob/mixedprotocollb/keps/sig-network/20200103-mixed-protocol-lb.md#implementation-detailsnotesconstraints
   ## Some mixed ports implementations use an annotation to merge services
   ## known anotations:
-    ## MetalLB - metallb.universe.tf/allow-shared-ip: [string]
-    ## Azure CPI LB - service.beta.kubernetes.io/azure-load-balancer-mixed-protocols: [bool] (Not tested)
+  ## MetalLB - metallb.universe.tf/allow-shared-ip: [string]
+  ## Azure CPI LB - service.beta.kubernetes.io/azure-load-balancer-mixed-protocols: [bool] (Not tested)
 
   tcp:
     enabled: false
-    ## type sets the implementation type. Values either combined | seperate. See docs.
-    type: "seperate"
+    ## type sets the implementation type. Values either combined | separate. See docs.
+    type: "separate"
   annotations:
-    #metallb.universe.tf/allow-shared-ip: "{{ .Release.Name }}"
-    #service.beta.kubernetes.io/azure-load-balancer-mixed-protocols: "true"
-    
+  #metallb.universe.tf/allow-shared-ip: "{{ .Release.Name }}"
+  #service.beta.kubernetes.io/azure-load-balancer-mixed-protocols: "true"
+
 resources:
   limits:
     cpu: 250m
@@ -43,6 +42,19 @@ resources:
 nodeSelector: {}
 tolerations: []
 affinity: {}
+
+extraEnv: []
+
+extraVolumes: []
+
+extraVolumeMounts: []
+
+voicePorts:
+- containerPort: 9987
+  nodePort: 30987
+
+configs:
+  allowlist: []
 
 persistence:
   enabled: false
