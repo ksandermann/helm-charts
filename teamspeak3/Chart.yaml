@@ -11,4 +11,4 @@ name: teamspeak3
 sources:
 - https://github.com/ksandermann/helm-charts/blob/master/teamspeak3
 version: 1.0.0
-appVersion: 3.13.5
+appVersion: 3.13.7
