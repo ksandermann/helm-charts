@@ -21,11 +21,15 @@ spec:
   {{- toYaml .Values.service.externalIPs | nindent 6 }}
   {{- end }}
   ports:
-    - nodePort: {{ .Values.service.nodePort }}
-      targetPort: 9987
+    {{- range .Values.voicePorts }}
+    - targetPort: {{ .containerPort }}
       protocol: UDP
-      name: teamspeak-voice
-      port: 9987
+      name: "ts3-voice-{{ .containerPort }}"
+      port: {{ .containerPort }}
+      {{- if .nodePort }}
+      nodePort: {{ .nodePort }}
+      {{- end }}
+    {{- end }}
     {{- if and (.Values.service.tcp.enabled) (eq .Values.service.tcp.type "combined") }}
     - name: teamspeak-filetransfer
       port: 30033

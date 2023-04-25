@@ -17,8 +17,9 @@ spec:
       heritage: {{ .Release.Service }}
   template:
     metadata:
-    {{- if .Values.podAnnotations }}
       annotations:
+        configs-hash: {{ (toYaml .Values.configs) | adler32sum | quote }}
+    {{- if .Values.podAnnotations }}
 {{ toYaml .Values.podAnnotations | indent 8 }}
     {{- end }}
       labels:
@@ -44,16 +45,40 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
-          - containerPort: 9987
+        {{- range .Values.voicePorts }}
+          - containerPort: {{ .containerPort }}
             protocol: UDP
+        {{- end }}
+        {{- if .Values.service.tcp.enabled }}
+          - containerPort: 30033
+            protocol: TCP
+          - containerPort: 10011
+            protocol: TCP
+        {{- end }}
         resources:
 {{ toYaml .Values.resources | indent 12 }}
         env:
           - name: TS3SERVER_LICENSE
             value: accept
+        {{- if .Values.configs.allowlist }}
+          - name: TS3SERVER_IP_ALLOWLIST
+            value: /allowlist.txt
+        {{- end }}
+          {{- range .Values.extraEnv }}
+          - name: {{ .name | quote }}
+            value: {{ .value | quote }}
+          {{- end }}
         volumeMounts:
-          - mountPath: /var/ts3server/
-            name: teamspeak-data
+          - name: teamspeak-data
+            mountPath: /var/ts3server/
+        {{- if .Values.configs.allowlist }}
+          - name: teamspeak-configs
+            mountPath: /allowlist.txt
+            subPath: allowlist.txt
+        {{- end }}
+        {{- if .Values.extraVolumeMounts }}
+{{ toYaml .Values.extraVolumeMounts | indent 10 }}
+        {{- end }}
       {{- if .Values.image.pullSecret }}
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}
@@ -65,4 +90,10 @@ spec:
             claimName: {{ .Values.persistence.existingClaim | default (printf "%s-%s" (.Release.Name) "data") | quote  }}
         {{- else }}
           emptyDir: {}
+        {{- end }}
+        - name: teamspeak-configs
+          configMap:
+            name: teamspeak
+        {{- if .Values.extraVolumeMounts }}
+{{ toYaml .Values.extraVolumes | indent 8 }}
         {{- end }}
