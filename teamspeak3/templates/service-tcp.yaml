@@ -2,12 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-tcp
+  name: {{ include "teamspeak.fullname" . }}-tcp
   labels:
-    app: teamspeak
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "teamspeak.labels" . | nindent 4 }}
 {{- if .Values.service.annotations }}
   annotations:
 {{ tpl (toYaml .Values.service.annotations) . | indent 4 }}
@@ -31,6 +28,5 @@ spec:
     protocol: TCP
     targetPort: 10011
   selector:
-    app: teamspeak
-    release: {{ .Release.Name }}
+    {{- include "teamspeak.selectorLabels" . | nindent 4 }}
 {{- end }}
