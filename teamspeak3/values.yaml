@@ -27,6 +27,7 @@ service:
   ## known anotations:
   ## MetalLB - metallb.universe.tf/allow-shared-ip: [string]
   ## Azure CPI LB - service.beta.kubernetes.io/azure-load-balancer-mixed-protocols: [bool] (Not tested)
+  externalTrafficPolicy: Cluster
 
   tcp:
     enabled: false
