@@ -17,6 +17,7 @@ spec:
   externalIPs:
   {{- toYaml .Values.service.externalIPs | nindent 6 }}
   {{- end }}
+  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
   ports:
     {{- range .Values.voicePorts }}
     - targetPort: {{ .containerPort }}
